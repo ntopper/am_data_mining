@@ -1,3 +1,13 @@
+install.packages("datasets")
+install.packages("caret", dependencies = c("Depends", "Suggests"))
+install.packages("RWeka")
+install.packages("e1071")
+install.packages("oblique.tree")
+library(datasets)
+library(caret)
+library(RWeka)
+library(e1071)
+library(oblique.tree)
 #function for creating test and train sets
 divideDataset <- function(data) {
   set.seed(7873)
@@ -21,7 +31,7 @@ means <- colMeans(cm$byClass)
 precision <- means[3]
 recall <- means[1]
 fmeasure <- 2*precision*recall/(precision+recall)
-dummyRIPPERrow <- list("LE RIPPER", accuracy, precision, recall, fmeasure)
+dummyRIPPERrow <- list("Dummy RIPPER", accuracy, precision, recall, fmeasure)
 #Train for C45
 dummyC45fit <- J48(login_key_recurrence~., data=dummySplit$trainSet)
 #Test for C45
@@ -32,7 +42,7 @@ means <- colMeans(cm$byClass)
 precision <- means[3]
 recall <- means[1]
 fmeasure <- 2*precision*recall/(precision+recall)
-dummyC45row <- list("LE C45", accuracy, precision, recall, fmeasure)
+dummyC45row <- list("Dummy C45", accuracy, precision, recall, fmeasure)
 #Train for Oblique
 dummyOblfit <- oblique.tree(login_key_recurrence~., data=dummySplit$trainSet)
 #Test for Oblique
@@ -43,7 +53,7 @@ means <- colMeans(cm$byClass)
 precision <- means[3]
 recall <- means[1]
 fmeasure <- 2*precision*recall/(precision+recall)
-dummyOblrow <- list("LE Oblique", accuracy, precision, recall, fmeasure)
+dummyOblrow <- list("Dummy Oblique", accuracy, precision, recall, fmeasure)
 #Train for Naive Bayes
 dummyNBfit <- naiveBayes(login_key_recurrence~., data=dummySplit$trainSet)
 #Test for Naive Bayes
@@ -54,7 +64,7 @@ means <- colMeans(cm$byClass)
 precision <- means[3]
 recall <- means[1]
 fmeasure <- 2*precision*recall/(precision+recall)
-dummyNBrow <- list("LE Naive Bayes", accuracy, precision, recall, fmeasure)
+dummyNBrow <- list("Dummy Naive Bayes", accuracy, precision, recall, fmeasure)
 #Train for k-Nearest Neighbor
 dummyKNNfit<- knn3(login_key_recurrence~., data=dummySplit$trainSet)
 #Test for KNN
@@ -65,7 +75,7 @@ means <- colMeans(cm$byClass)
 precision <- means[3]
 recall <- means[1]
 fmeasure <- 2*precision*recall/(precision+recall)
-dummyKNNrow <- list("LE k-Nearest Neighbor", accuracy, precision, recall, fmeasure)
+dummyKNNrow <- list("Dummy k-Nearest Neighbor", accuracy, precision, recall, fmeasure)
 
 print(dummyRIPPERrow)
 print(dummyC45row)
