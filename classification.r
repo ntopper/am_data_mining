@@ -1,9 +1,7 @@
-install.packages("datasets")
 install.packages("caret", dependencies = c("Depends", "Suggests"))
 install.packages("RWeka")
 install.packages("e1071")
 install.packages("oblique.tree")
-library(datasets)
 library(caret)
 library(RWeka)
 library(e1071)
@@ -18,67 +16,66 @@ divideDataset <- function(data) {
   list(trainSet=train, testSet=test)
 }
 
-dummy <- read.csv("dummy.csv")
-dummy <- subset(life_expectancy, select = -c(caption, lat, long, loginkey))
-dummySplit <- divideDataset(dummy)
+movie <- read.csv("./moviedb_data/moviedb1.csv")
+movieSplit <- divideDataset(movie)
 #Train for RIPPER
-dummyRIPPERfit <- JRip(login_key_recurrence~., data=dummySplit$trainSet)
+movieRIPPERfit <- JRip(genre~., data=movieSplit$trainSet)
 #Test for RIPPER
-prediction <- predict(dummyRIPPERfit, dummySplit$testSet, type="class")
-cm <- confusionMatrix(prediction, dummySplit$testSet$login_key_recurrence)
+prediction <- predict(movieRIPPERfit, movieSplit$testSet, type="class")
+cm <- confusionMatrix(prediction, movieSplit$testSet$genre)
 accuracy <- cm$overall['Accuracy']
 means <- colMeans(cm$byClass)
 precision <- means[3]
 recall <- means[1]
 fmeasure <- 2*precision*recall/(precision+recall)
-dummyRIPPERrow <- list("Dummy RIPPER", accuracy, precision, recall, fmeasure)
+movieRIPPERrow <- list("movie RIPPER", accuracy, precision, recall, fmeasure)
 #Train for C45
-dummyC45fit <- J48(login_key_recurrence~., data=dummySplit$trainSet)
+movieC45fit <- J48(genre~., data=movieSplit$trainSet)
 #Test for C45
-prediction <- predict(dummyC45fit, dummySplit$testSet, type="class")
-cm <- confusionMatrix(prediction, dummySplit$testSet$login_key_recurrence)
+prediction <- predict(movieC45fit, movieSplit$testSet, type="class")
+cm <- confusionMatrix(prediction, movieSplit$testSet$genre)
 accuracy <- cm$overall['Accuracy']
 means <- colMeans(cm$byClass)
 precision <- means[3]
 recall <- means[1]
 fmeasure <- 2*precision*recall/(precision+recall)
-dummyC45row <- list("Dummy C45", accuracy, precision, recall, fmeasure)
+movieC45row <- list("movie C45", accuracy, precision, recall, fmeasure)
 #Train for Oblique
-dummyOblfit <- oblique.tree(login_key_recurrence~., data=dummySplit$trainSet)
+movieOblfit <- oblique.tree(genre~., data=movieSplit$trainSet)
 #Test for Oblique
-prediction <- predict(dummyOblfit, dummySplit$testSet, type="class")
-cm <- confusionMatrix(prediction, dummySplit$testSet$login_key_recurrence)
+prediction <- predict(movieOblfit, movieSplit$testSet, type="class")
+cm <- confusionMatrix(prediction, movieSplit$testSet$genre)
 accuracy <- cm$overall['Accuracy']
 means <- colMeans(cm$byClass)
 precision <- means[3]
 recall <- means[1]
 fmeasure <- 2*precision*recall/(precision+recall)
-dummyOblrow <- list("Dummy Oblique", accuracy, precision, recall, fmeasure)
+movieOblrow <- list("movie Oblique", accuracy, precision, recall, fmeasure)
 #Train for Naive Bayes
-dummyNBfit <- naiveBayes(login_key_recurrence~., data=dummySplit$trainSet)
+movieNBfit <- naiveBayes(genre~., data=movieSplit$trainSet)
 #Test for Naive Bayes
-prediction <- predict(dummyNBfit, dummySplit$testSet, type="class")
-cm <- confusionMatrix(prediction, dummySplit$testSet$login_key_recurrence)
+prediction <- predict(movieNBfit, movieSplit$testSet, type="class")
+cm <- confusionMatrix(prediction, movieSplit$testSet$genre)
 accuracy <- cm$overall['Accuracy']
 means <- colMeans(cm$byClass)
 precision <- means[3]
 recall <- means[1]
 fmeasure <- 2*precision*recall/(precision+recall)
-dummyNBrow <- list("Dummy Naive Bayes", accuracy, precision, recall, fmeasure)
+movieNBrow <- list("movie Naive Bayes", accuracy, precision, recall, fmeasure)
 #Train for k-Nearest Neighbor
-dummyKNNfit<- knn3(login_key_recurrence~., data=dummySplit$trainSet)
+movieKNNfit<- knn3(genre~., data=movieSplit$trainSet)
 #Test for KNN
-prediction <- predict(dummyKNNfit, dummySplit$testSet, type="class")
-cm <- confusionMatrix(prediction, dummySplit$testSet$login_key_recurrence)
+prediction <- predict(movieKNNfit, movieSplit$testSet, type="class")
+cm <- confusionMatrix(prediction, movieSplit$testSet$genre)
 accuracy <- cm$overall['Accuracy']
 means <- colMeans(cm$byClass)
 precision <- means[3]
 recall <- means[1]
 fmeasure <- 2*precision*recall/(precision+recall)
-dummyKNNrow <- list("Dummy k-Nearest Neighbor", accuracy, precision, recall, fmeasure)
+movieKNNrow <- list("movie k-Nearest Neighbor", accuracy, precision, recall, fmeasure)
 
-print(dummyRIPPERrow)
-print(dummyC45row)
-print(dummyOblrow)
-print(dummyNBrow)
-print(dummyKNNrow)
+print(movieRIPPERrow)
+print(movieC45row)
+print(movieOblrow)
+print(movieNBrow)
+print(movieKNNrow)
