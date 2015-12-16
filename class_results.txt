@@ -1,0 +1,19 @@
+NaiveBayes
+Accuracy : 0.3477          
+                 95% CI : (0.3287, 0.3671)
+    No Information Rate : 0.3265          
+    P-Value [Acc > NIR] : 0.01442         
+                                          
+                  Kappa : 0.1222          
+ Mcnemar's Test P-Value : NA 
+
+ C4.5
+Overall Statistics
+                                          
+               Accuracy : 0.0798          
+                 95% CI : (0.0693, 0.0913)
+    No Information Rate : 0.3265          
+    P-Value [Acc > NIR] : 1               
+                                          
+                  Kappa : 1e-04           
+ Mcnemar's Test P-Value : NA 
